@@ -11,11 +11,14 @@
 0="${${(M)0##/*}:-${(%):-%N}}"  # filter absolute path, fallback to %N
 
 typeset -g ZSRV_REDIS="${0:h}"
+typeset -g ZSRV_REDIS_PID
 
 if [[ -f "${ZSRV_REDIS}/redis.conf" ]]; then
-    redis-server "${ZSRV_REDIS}/redis.conf"
+    redis-server "${ZSRV_REDIS}/redis.conf" &; ZSRV_REDIS_PID=$!
+    wait "$ZSRV_REDIS_PID"
 elif [[ -f "${ZSRV_REDIS}/redis.conf.default" ]]; then
-    redis-server "${ZSRV_REDIS}/redis.conf.default"
+    redis-server "${ZSRV_REDIS}/redis.conf.default" &; ZSRV_REDIS_PID=$!
+    wait "$ZSRV_REDIS_PID"
 else
     print "No redis.conf found, redis-server did not run"
 fi

@@ -16,6 +16,14 @@ port 4815
 # require password to connect
 #requirepass 4815162342
 
+# don't change this setting, it allows to stop redis-server
+daemonize no
+
+# there's apparently a bug in redis-server <= 4.0.6, this doesn't work
+#pidfile /var/run/redis_6379.pid
+
+
+
 # Redis configuration file example.
 #
 # Note that in order to read the configuration file, Redis must be
@@ -151,7 +159,7 @@ tcp-keepalive 300
 
 # By default Redis does not run as a daemon. Use 'yes' if you need it.
 # Note that Redis will write a pid file in /usr/local/var/run/redis.pid when daemonized.
-daemonize no
+#daemonize no
 
 # If you run Redis from upstart or systemd, Redis can interact with your
 # supervision tree. Options:
@@ -173,7 +181,7 @@ supervised no
 #
 # Creating a pid file is best effort: if Redis is not able to create it
 # nothing bad happens, the server will start and run normally.
-pidfile /var/run/redis_6379.pid
+#pidfile /var/run/redis_6379.pid
 
 # Specify the server verbosity level.
 # This can be one of:
