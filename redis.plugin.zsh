@@ -22,18 +22,19 @@ if [[ -f "$cfg" ]]; then
     { local pid="$(<$pidfile)"; } 2>/dev/null
     if [[ ${+commands[pkill]} = 1 && "$pid" = <-> && $pid -gt 0 ]]; then
         if pkill -INT -x -F "$pidfile" redis-server.\*; then
-            print "ZSERVICE: Stopped previous redis-server instance, PID: $pid" >>! "$logfile"
+            builtin print "ZSERVICE: Stopped previous redis-server instance, PID: $pid" >>! "$logfile"
             LANG=C sleep 0.3
         else
-            print "ZSERVICE: Previous redis-server instance (PID:$pid) not running" >>! "$logfile"
+            builtin print "ZSERVICE: Previous redis-server instance (PID:$pid) not running" >>! "$logfile"
         fi
     fi
 
-    trap 'kill -INT $ZSRV_PID; command sleep 2; builtin exit 0' HUP
+    builtin trap 'kill -INT $ZSRV_PID; command sleep 2; builtin exit 0' HUP
     redis-server "$cfg" >>!"$logfile" 2>&1 &; ZSRV_PID=$!
-    echo "$ZSRV_PID" >! "$pidfile"
-    return 0
+    builtin echo "$ZSRV_PID" >! "$pidfile"
+    LANG=C command sleep 0.7
+    builtin return 0
 else
-    print "ZSERVICE: No redis.conf found, redis-server did not run" >>! "$logfile"
-    return 1
+    builtin print "ZSERVICE: No redis.conf found, redis-server did not run" >>! "$logfile"
+    builtin return 1
 fi
