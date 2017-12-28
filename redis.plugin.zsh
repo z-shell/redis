@@ -10,17 +10,28 @@
 
 0="${${(M)0##/*}:-${(%):-%N}}"  # filter absolute path, fallback to %N
 
-typeset -g ZSRV_REDIS_DIR="${0:h}"
-typeset -g ZSRV_REDIS_PID
+typeset -g ZSRV_DIR="${0:h}"
+typeset -g ZSRV_PID
 
-if [[ -f "${ZSRV_REDIS_DIR}/redis.conf" ]]; then
-    trap 'kill -INT $ZSRV_REDIS_PID; exit 0' HUP
-    redis-server "${ZSRV_REDIS_DIR}/redis.conf" &; ZSRV_REDIS_PID=$!
-    wait "$ZSRV_REDIS_PID"
-elif [[ -f "${ZSRV_REDIS_DIR}/redis.conf.default" ]]; then
-    trap 'kill -INT $ZSRV_REDIS_PID; exit 0' HUP
-    redis-server "${ZSRV_REDIS_DIR}/redis.conf.default" &; ZSRV_REDIS_PID=$!
-    wait "$ZSRV_REDIS_PID"
+local pidfile="$ZSRV_WORK_DIR"/"$ZSRV_ID".pid
+local cfg="${ZSRV_DIR}/redis.conf"
+[[ ! -f "$cfg" ]] && cfg="${ZSRV_DIR}/redis.conf.default"
+
+if [[ -f "$cfg" ]]; then
+    { local pid="$(<$pidfile)"; } 2>/dev/null
+    if [[ ${+commands[pkill]} = 1 && "$pid" = <-> && $pid -gt 0 ]]; then
+        if pkill -INT -x -F "$pidfile" redis-server.\*; then
+            print "Stopped redis-server, PID: $pid"
+        else
+            print "Previous redis-server instance (PID:$pid) not running"
+        fi
+    fi
+
+    trap 'kill -INT $ZSRV_PID; exit 0' HUP
+    redis-server "$cfg" &; ZSRV_PID=$!
+    echo "$ZSRV_PID" >! "$pidfile"
+    return 0
 else
     print "No redis.conf found, redis-server did not run"
+    return 1
 fi
