@@ -21,9 +21,9 @@ local cfg="${ZSRV_DIR}/redis.conf"
 if [[ -f "$cfg" ]]; then
     { local pid="$(<$pidfile)"; } 2>/dev/null
     if [[ ${+commands[pkill]} = 1 && "$pid" = <-> && $pid -gt 0 ]]; then
-        if pkill -INT -x -F "$pidfile" redis-server.\*; then
+        if command pkill -INT -x -F "$pidfile" redis-server.\*; then
             builtin print "ZSERVICE: Stopped previous redis-server instance, PID: $pid" >>! "$logfile"
-            LANG=C sleep 0.3
+            LANG=C sleep 1.5
         else
             builtin print "ZSERVICE: Previous redis-server instance (PID:$pid) not running" >>! "$logfile"
         fi
