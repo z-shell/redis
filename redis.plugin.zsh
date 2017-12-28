@@ -22,6 +22,7 @@ if [[ -f "$cfg" ]]; then
     if [[ ${+commands[pkill]} = 1 && "$pid" = <-> && $pid -gt 0 ]]; then
         if pkill -INT -x -F "$pidfile" redis-server.\*; then
             print "Stopped redis-server, PID: $pid"
+            LANG=C sleep 0.3
         else
             print "Previous redis-server instance (PID:$pid) not running"
         fi
