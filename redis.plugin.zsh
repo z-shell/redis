@@ -1,5 +1,5 @@
 #
-# A z-service file that runs redis database server.
+# A z-service file that runs redis database server (redis-server).
 #
 # Use with plugin manager that supports single plugin load per all active Zsh
 # sessions.
@@ -7,6 +7,7 @@
 # You should copy `redis.conf.default' to `redis.conf' and adapt it to your
 # needs. The service will use the `*.default' file if there is no `*.conf'
 # file.
+#
 
 0="${${(M)0##/*}:-${(%):-%N}}"  # filter absolute path, fallback to %N
 
@@ -21,10 +22,10 @@ if [[ -f "$cfg" ]]; then
     { local pid="$(<$pidfile)"; } 2>/dev/null
     if [[ ${+commands[pkill]} = 1 && "$pid" = <-> && $pid -gt 0 ]]; then
         if pkill -INT -x -F "$pidfile" redis-server.\*; then
-            print "Stopped previous redis-server instance, PID: $pid"
+            print "ZSERVICE: Stopped previous redis-server instance, PID: $pid" >>! "$logfile"
             LANG=C sleep 0.3
         else
-            print "Previous redis-server instance (PID:$pid) not running"
+            print "ZSERVICE: Previous redis-server instance (PID:$pid) not running" >>! "$logfile"
         fi
     fi
 
@@ -33,6 +34,6 @@ if [[ -f "$cfg" ]]; then
     echo "$ZSRV_PID" >! "$pidfile"
     return 0
 else
-    print "No redis.conf found, redis-server did not run"
+    print "ZSERVICE: No redis.conf found, redis-server did not run" >>! "$logfile"
     return 1
 fi
