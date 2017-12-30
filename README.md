@@ -22,3 +22,9 @@ zplugin light zservices/redis
 ```
 
 to `~/.zshrc`.
+
+## Explanation of Zsh-spawned services
+
+First Zsh instance that will gain a lock will spawn the service. Other Zsh instances will
+wait. When you close the initial Zsh session, another Zsh will gain lock and resume the
+service.
