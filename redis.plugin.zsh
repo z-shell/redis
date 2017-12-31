@@ -31,7 +31,7 @@ if [[ -f "$cfg" ]]; then
         fi
     fi
 
-    builtin trap 'kill -INT $ZSRV_PID; command sleep 2; builtin exit 0' HUP
+    builtin trap 'kill -INT $ZSRV_PID; command sleep 2; builtin exit 1' HUP
     redis-server "$cfg" >>!"$logfile" 2>&1 &; ZSRV_PID=$!
     builtin echo "$ZSRV_PID" >! "$pidfile"
     LANG=C command sleep 0.7
