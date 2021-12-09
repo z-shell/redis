@@ -1,10 +1,7 @@
-# `REDIS` ZINIT SERVICE
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+# `Redis` Z-Shell ZI Servive
 
 - [Introduction](#introduction)
-  - [Zinit](#zinit)
+  - [ZI](#zi)
   - [Explanation of Zsh-spawned services](#explanation-of-zsh-spawned-services)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -23,14 +20,14 @@ ztie -d db/redis -f "127.0.0.1:4815/3/MYLIST" -L list mylist
 
 The command `ztie` is provided by [z-shell/zredis](https://github.com/z-shell/zredis) plugin.
 
-## [Zinit](https://github.com/z-shell/zinit)
+## [ZI](https://github.com/z-shell/zi)
 
 A service-plugin needs a plugin manager that supports loading single plugin instance
-per all active Zsh sessions, in background. Zinit supports this, just add:
+per all active Zsh sessions, in background. ZI supports this, just add:
 
 ```
-zinit ice service'redis'
-zinit light z-shell/redis
+zi ice service'redis'
+zi light z-shell/redis
 ```
 
 to `~/.zshrc`.
