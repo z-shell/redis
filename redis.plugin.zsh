@@ -11,7 +11,7 @@
 
 0="${${ZERO:-${(M)0##/*}}:-${(%):-%N}}"  # try ZERO, filter absolute path from $0, fallback to %N
 
-(( ! ${+ZSRV_WORK_DIR} || ! ${+ZSRV_ID} )) && { print "Error: plugin \`zservices/redis' needs to be loaded as service, aborting."; return 1; }
+(( ! ${+ZSRV_WORK_DIR} || ! ${+ZSRV_ID} )) && { print "Error: plugin \`z-shell/redis' needs to be loaded as service, aborting."; return 1; }
 
 typeset -g ZSRV_DIR="${0:h}"
 typeset -g ZSRV_PID
