@@ -1,12 +1,9 @@
-# `Redis` Z-Shell ZI Servive
-
-- [Introduction](#introduction)
-  - [ZI](#zi)
-  - [Explanation of Zsh-spawned services](#explanation-of-zsh-spawned-services)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Introduction
+<h2 align="center">
+  <a href="https://github.com/z-shell/zi">
+    <img src="https://github.com/z-shell/zi/raw/main/docs/images/logo.svg" alt="Logo" width="80" height="80">
+  </a>
+❮ ZI ❯ Service - Redis
+</h2>
 
 This Zsh service-plugin will run `redis-server` pointing it to configuration file
 `redis.conf`. This can be used with plugin [z-shell/zredis](https://github.com/z-shell/zredis)
